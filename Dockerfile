@@ -7,17 +7,19 @@ RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get upgrade -y
 RUN apt-get install -y nodejs
 
-COPY package.json /app/package.json
-COPY package-lock.json /app/package-lock.json
+WORKDIR /app
+
+COPY package.json package.json
+COPY package-lock.json package-lock.json
 #moved the package.json and package-lock.json from root to /app
 
 
-RUN cd app && npm install 
+RUN npm install 
 # moved file up to save caching while making changes to the main.js
 
-COPY main.js /app/main.js
+COPY main.js main.js
 # or we can use `COPY . .` to copy all files from the current directory to the container
 
 
 
-ENTRYPOINT [ "node", "/app/main.js" ]
+ENTRYPOINT [ "node", "main.js" ]
